@@ -27,9 +27,6 @@ async function main({ subject, text, html }) {
 
   const template = `
     <section>
-      <header style="padding: 10px 0; border-bottom: 1px solid #f1f1f1;">
-        <img src="cid:logo.svg" width="120" height="24" alt="稀土掘金" />
-      </header>
       <main style="padding: 10px;">
         ${html ? html : `<pre style="margin: 0;">${text}</pre>`}
       </main>
@@ -45,14 +42,7 @@ async function main({ subject, text, html }) {
     to: env.EMAIL_TO, // list of receivers
     subject, // Subject line
     // text, // plain text body
-    html: template, // html body
-    attachments: [
-      {
-        filename: "logo.svg",
-        path: path.resolve(__dirname, "../../resources/logo.svg"),
-        cid: "logo.svg" //same cid value as in the html img src
-      }
-    ]
+    html: template // html body
   });
 
   console.log("已通知订阅人！");

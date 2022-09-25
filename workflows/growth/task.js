@@ -1,3 +1,4 @@
+const env = require("./utils/env");
 const {
   collectArticle,
   diggArticle,
@@ -12,31 +13,31 @@ const {
 
 const handleTask = async (task, cookie) => {
   const id = task.task_id;
-  if (id == 13) {
+  if (id == 13 && env.READARTICLE) {
     await readArticle(task, cookie);
   }
-  if (id == 9) {
+  if (id == 9 && env.DIGGARTICLE) {
     await diggArticle(task, cookie);
   }
-  if (id == 12) {
+  if (id == 12 && env.COLLECTARTICLE) {
     await collectArticle(task, cookie);
   }
-  if (id == 11) {
+  if (id == 11 && env.FOLLOWAUTHOR) {
     await followAuthor(task, cookie);
   }
-  if (id == 7) {
+  if (id == 7 && env.COMMENTARTICLE) {
     await commentArticle(task, cookie);
   }
-  if (id == 8) {
+  if (id == 8 && env.COMMENTPIN) {
     await commentPin(task, cookie);
   }
-  if (id == 10) {
+  if (id == 10 && env.DIGGPIN) {
     await diggPin(task, cookie);
   }
-  if (id == 6) {
+  if (id == 6 && env.PUBLISHPIN) {
     await publishPin(task, cookie);
   }
-  if (id == 5) {
+  if (id == 5 && env.PUBLISHARTICLE) {
     await publishArticle(task, cookie);
   }
 };

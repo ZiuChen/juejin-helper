@@ -12,20 +12,7 @@ const articleComment = async (task, cookie) => {
   }
   const times = task.limit - task.done; //需要执行的次数
   console.log(`需要评论${times}篇文章`);
-  const defaultComments = [
-    `感谢，学习了，受益颇多`,
-    "竟然还能这样，妙啊！",
-    "学到了",
-    "听君一席话，如同听君一席话",
-    "我虽然看不懂，但我大受震撼",
-    "写的真不错",
-    "66666666",
-    "收藏了",
-    "mark",
-    "好文，收藏夹吃灰",
-    "进收藏吃灰吧",
-    "怎么做才能像你一样优秀？真让人头疼"
-  ];
+  const defaultComments = ["66666666", "好文，收藏了", "好文，mark"];
   for (let i = 0; i < times; i++) {
     const aIndex = getRandomInt(0, articles.length - 1);
     const article = articles[aIndex] || false;

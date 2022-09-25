@@ -391,7 +391,6 @@ class Seagold {
     return `
 今日限制矿石数 ${userInfo.todayLimitDiamond}
 ${userInfo.todayDiamond < userInfo.todayLimitDiamond ? `今日获取矿石数 ${userInfo.todayDiamond}` : "今日获取已达上限"}
-${this.history.length ? `\n游戏记录\n${gameLives}` : ""}
 `.trim();
   }
 }

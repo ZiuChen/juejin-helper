@@ -22,13 +22,22 @@
 | PUSHPLUS_TOKEN   | [Pushplus](http://www.pushplus.plus/) 官网申请，支持微信消息推送 | 否       |
 | MERGE            | 是否聚合消息通知，可选值`true`/`false`，默认不聚合           | 否       |
 
-成长任务相关环境变量
+成长任务相关环境变量（**均非必填**）
 
 | 变量名       | 用途                                    | 默认值 | 可选值                                                       |
 | ------------ | --------------------------------------- | ------ | ------------------------------------------------------------ |
-| `APPEND_EMOJI` | 发布沸点/沸点评论/文章评论时是否跟随表情     | `false` | `true`/`false`                                               |
-| `ONLY_EMOJI`   | 沸点评论是否只评论一个表情            | `false` | `true`/`false`                                               |
-| `WORDS_API`    | 发布沸点/沸点评论时使用的句子类型参数 | `i` | 查看下表 |
+| APPEND_EMOJI | 发布沸点/沸点评论/文章评论时是否跟随表情     | `false` | `true`/`false`                                               |
+| ONLY_EMOJI   | 沸点评论是否只评论一个表情            | `false` | `true`/`false`                                               |
+| READARTICLE | 阅读文章功能开关 | `true` | `true`/`false` |
+| COLLECTARTICLE | 收藏文章功能开关 | `true` | `true`/`false` |
+| DIGGARTICLE | 点赞文章功能开关 | `true` | `true`/`false` |
+| PUBLISHARTICLE | 发表文章功能开关 | `true` | `true`/`false` |
+| PUBLISHPIN | 发表沸点功能开关 | `true` | `true`/`false` |
+| DIGGPIN | 点赞沸点功能开关 | `true` | `true`/`false` |
+| COMMENTARTICLE | 评论文章功能开关 | `true` | `true`/`false` |
+| COMMENTPIN | 评论沸点功能开关 | `true` | `true`/`false` |
+| FOLLOWAUTHOR | 关注掘友功能开关 | `true` | `true`/`false` |
+| WORDS_API    | 发布沸点/沸点评论时使用的句子类型参数 | `i` | 查看下表 |
 
 句子类型参数 来源：[一言](https://developer.hitokoto.cn/sentence/#句子类型-参数)
 
