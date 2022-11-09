@@ -29,9 +29,10 @@ const getRandomEmoji = async () => {
 const getHitokotoWords = async () => {
   return new Promise(async r => {
     const res = await axios.get(hitokotoURL).catch(error => {
+      console.log("获取每日一言失败 请检查请求参数", error);
       return r(defaultWords);
     });
-    if (res.status == 200) {
+    if (res?.status == 200) {
       const data = res.data;
       if (data && data.hitokoto) {
         const emj = env.APPEND_EMOJI ? await getRandomEmoji() : "";
