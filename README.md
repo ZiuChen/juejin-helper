@@ -1,81 +1,43 @@
-# *juejin-helper* 腾讯云函数部署
+# juejin-helper-SCF
 
-## 🚀 主要功能
+[原仓库地址](https://github.com/iDerekLi/juejin-helper)
 
-项目主体部分(签到、抽奖、BUG、海底掘金)来自[iDerekLi/juejin-helper](https://github.com/iDerekLi/juejin-helper)
+## 与原仓库的区别
 
-每日成长任务部分来自[chinjiaqing/juejin-helper](https://github.com/chinjiaqing/juejin-helper)
+- 仅保留`workflow`部分的代码
+- 修改原仓库`workflow`入口逻辑 使其适合在腾讯云函数上运行
+- 添加`dotenv` 从.env文件读取环境变量 (云函数对环境变量的体积有限制)
+- 统一消息推送位置到`index.js` 合并所有的消息到一条推送
 
-## 🔰 使用步骤
-### 💡 环境变量
+## 腾讯云函数解决puppeteer启动问题
 
-基础环境变量参考[iDerekLi/juejin-helper](https://github.com/iDerekLi/juejin-helper)
+由于puppeteer需要以chromium为依赖 而云函数的代码和其执行环境是分离的
 
-| 变量名           | 含义                                                         | 是否必填 |
-| ---------------- | ------------------------------------------------------------ | -------- |
-| COOKIE           | 掘金网站Cookie                                               | 是       |
-| COOKIE_2         | 多用户, 当需要同时运行多个掘金用户时所需, 支持最多 **5** 名用户(即COOKIE + COOKIE_2 - COOKIE_5) | 否       |
-| EMAIL_USER       | 发件人邮箱地址(需要开启 SMTP)                                | 否       |
-| EMAIL_PASS       | 发件人邮箱密码(SMTP密码)                                     | 否       |
-| EMAIL_TO         | 订阅人邮箱地址(收件人). 如需多人订阅使用 `, `分割, 例如: `a@163.com, b@qq.com` | 否       |
-| DINGDING_WEBHOOK | 钉钉机器人WEBHOOK                                            | 否       |
-| PUSHPLUS_TOKEN   | [Pushplus](http://www.pushplus.plus/) 官网申请，支持微信消息推送 | 否       |
-| MERGE            | 是否聚合消息通知，可选值`true`/`false`，默认不聚合           | 否       |
+- puppeteer和chromium的版本必须一一对应
+  - `~\node_modules\puppeteer-core\lib\cjs\puppeteer\revisions.js`
+  - [下载Chromium](https://registry.npmmirror.com/binary.html?path=chromium-browser-snapshots)
+- 需要将下载得到的安装包放到层中 函数执行时 依赖将被解压到对应文件夹 代码中涉及到启动puppeteer的情况 需要指定executablePath 从`/opt`目录下读取chromium
+- 需要覆写环境变量`PUPPETEER_EXECUTABLE_PATH`为`/opt/chrome-linux/chrome`指向层中的可执行文件
 
-成长任务相关环境变量（**均非必填**）
+## 部署项目到腾讯云函数
 
-| 变量名       | 用途                                    | 默认值 | 可选值                                                       |
-| ------------ | --------------------------------------- | ------ | ------------------------------------------------------------ |
-| APPEND_EMOJI | 发布沸点/沸点评论/文章评论时是否跟随表情     | `true` | `true`/`false`                                               |
-| ONLY_EMOJI   | 沸点评论只评论一个表情，否则评论随机诗句 | `true` | `true`/`false`                                               |
-| READARTICLE | 阅读文章功能开关 | `true` | `true`/`false` |
-| COLLECTARTICLE | 收藏文章功能开关 | `true` | `true`/`false` |
-| DIGGARTICLE | 点赞文章功能开关 | `true` | `true`/`false` |
-| PUBLISHARTICLE | 发表文章功能开关 | `true` | `true`/`false` |
-| PUBLISHPIN | 发表沸点功能开关 | `true` | `true`/`false` |
-| DIGGPIN | 点赞沸点功能开关 | `true` | `true`/`false` |
-| COMMENTARTICLE | 评论文章功能开关 | `true` | `true`/`false` |
-| COMMENTPIN | 评论沸点功能开关 | `true` | `true`/`false` |
-| FOLLOWAUTHOR | 关注掘友功能开关 | `true` | `true`/`false` |
-| WORDS_API    | 发布沸点/沸点评论时使用的句子类型参数 | `i` | 查看下表 |
+### 1. 创建函数:
 
-句子类型参数 来源：[一言](https://developer.hitokoto.cn/sentence/#句子类型-参数)
+从头开始 / 事件函数 / 环境`Nodejs16` / 内存`128MB` / 勾选异步执行 / 执行超时时间`86400` / 参数填入环境变量
 
-| 参数 | 说明     |
-| ---- | -------- |
-| a    | 动画     |
-| b    | 漫画     |
-| c    | 游戏     |
-| d    | 文学     |
-| e    | 原创     |
-| f    | 来自网络 |
-| g    | 其他     |
-| h    | 影视     |
-| i    | 诗词     |
-| j    | 网易云   |
-| k    | 哲学     |
-| l    | 抖机灵   |
+可根据实际情况配置`触发器`定时执行，**其余内容保持默认**
 
+### 2. 克隆代码:
 
-### 🎯 项目部署
-
-#### 1. 创建函数:
-
-从头开始 / 事件函数 / 环境`Nodejs16` / 内存`64MB` / 勾选异步执行 / 执行超时时间`86400` / 参数填入环境变量
-
-可根据实际情况配置`触发器`定时执行, **其余内容保持默认**
-
-#### 2. 克隆代码:
-
-复制以下代码,使用腾讯云函数的 在线编辑器 点击 `终端/新终端`,右键点击终端窗口即粘贴,Enter运行 
+复制以下代码，使用腾讯云函数的 在线编辑器 点击 `终端/新终端`，右键点击终端窗口即粘贴，Enter运行
 
 ```shell
   git clone https://github.com/ZiuChen/juejin-helper-SCF.git
 ```
 
-#### 3. 安装依赖:
+### 3. 安装依赖:
 
-复制以下代码,右键点击上一步的终端窗口即粘贴,Enter运行
+复制以下代码，右键点击上一步的终端窗口(粘贴)，Enter运行
 
 ```shell
   mv juejin-helper-SCF src && cd src/ && yarn
@@ -83,14 +45,10 @@
 
 **完整执行**上述步骤后，点击“部署”，部署成功后点击“测试”，查看日志输出即可，如配置了触发器，则将每天定时触发。
 
-### 📦 更新函数
+### 更新函数
 
 复制以下代码，点击 `终端/新终端`，右键点击终端窗口即粘贴,Enter运行 
 
 ```shell
   cd src && git pull
 ```
-
-## 💻开发相关
-
-Branch `main` <-- Branch `dev`
