@@ -204,7 +204,15 @@ class MockVisitTask extends Task {
     console.log('--------模拟访问---------')
     try {
       const browser = this.juejin.browser()
-      await browser.open()
+      await browser.open({
+        executablePath: '/opt/chrome-linux/chrome',
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        defaultViewport: {
+          width: 1920,
+          height: 1080,
+        },
+      })
       try {
         await browser.visitPage('/')
         this.homePageVisited = true
