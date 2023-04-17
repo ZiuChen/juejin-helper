@@ -3,13 +3,14 @@
   "homepage": "https://github.com/iDerekLi/juejin-helper",
   "releases_url": "https://api.github.com/repos/iDerekLi/juejin-helper/releases",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node -e \"const { main_handler } = require('./index.js'); main_handler()\""
   },
   "dependencies": {
     "axios": "^0.27.2",
     "dotenv": "^16.0.3",
     "fast-astar": "^1.0.6",
-    "juejin-helper": "^1.7.1",
+    "juejin-helper": "^1.7.2",
     "nodemailer": "^6.7.0"
   }
 }

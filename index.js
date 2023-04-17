@@ -1,7 +1,7 @@
 require('dotenv').config()
 const notification = require('./utils/notification-kit')
 const checkin = require('./checkin')
-const seaGold = require('./seagold')
+// const seaGold = require('./seagold')
 const utils = require('./utils/utils')
 const env = require('./utils/env')
 
@@ -13,11 +13,13 @@ exports.main_handler = async () => {
   const cookies = utils.getUsersCookie(env)
 
   // 获取所有用户的cookie并执行相关操作
-  for (const ck of cookies) {
+  for (let i = 0; i < cookies.length; i++) {
+    const ck = cookies[i]
     // 当前用户的消息列表
     const usrMsgList = []
     // 默认执行签到、海底掘金 两个任务 每个任务使用try-catch包裹
     // 函数执行后返回messageList数组
+    console.log('开始执行任务: COOKIE_' + (i + 1))
     try {
       const res = await checkin(ck)
       usrMsgList.push(res)
@@ -25,12 +27,12 @@ exports.main_handler = async () => {
       console.log('签到任务出错: ' + e)
     }
 
-    try {
-      const res = await seaGold(ck)
-      usrMsgList.push(res)
-    } catch (e) {
-      console.log('海底掘金任务出错: ' + e)
-    }
+    // try {
+    //   const res = await seaGold(ck)
+    //   usrMsgList.push(res)
+    // } catch (e) {
+    //   console.log('海底掘金任务出错: ' + e)
+    // }
 
     // 任务执行完毕 将当前用户的消息列表添加到全局
     msgList.push(usrMsgList.join(`\n${'-'.repeat(30)}\n`))

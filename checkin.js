@@ -205,7 +205,6 @@ class MockVisitTask extends Task {
     try {
       const browser = this.juejin.browser()
       await browser.open({
-        executablePath: '/opt/chrome-linux/chrome',
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         defaultViewport: {
@@ -218,15 +217,17 @@ class MockVisitTask extends Task {
         this.homePageVisited = true
         console.log('掘金首页：页面访问成功')
       } catch (e) {
-        console.log('掘金首页：页面访问失败')
+        console.log('掘金首页：页面访问失败' + e)
       }
       await utils.wait(utils.randomRangeNumber(2000, 5000))
       try {
-        await browser.visitPage('/user/center/signin')
+        await browser.visitPage('/user/center/signin', {
+          timeout: 10000,
+        })
         this.signInPageVisited = true
         console.log('掘金每日签到：页面访问成功')
       } catch (e) {
-        console.log('掘金每日签到：页面访问失败')
+        console.log('掘金每日签到：页面访问失败' + e)
       }
       await utils.wait(utils.randomRangeNumber(2000, 5000))
       await browser.close()
